@@ -1,22 +1,32 @@
-import React from 'react';
-
-// material-ui
-import { Typography } from '@material-ui/core';
-
-// project imports
+import React from 'react'
+import Tabla from '../productos/Tabla'
 import MainCard from 'ui-component/cards/MainCard';
+import SubCard from 'ui-component/cards/SubCard';
+import { Grid } from '@material-ui/core';
+import { gridSpacing } from 'store/constant';
+import  Formulario  from 'views/productos/Formulario';
 
-//= =============================|| SAMPLE PAGE ||==============================//
-
-const SamplePage = () => (
-    <MainCard title="Sample Card">
-        <Typography variant="body2">
-            Lorem ipsum dolor sit amen, consenter nipissing eli, sed do elusion tempos incident ut laborers et doolie magna alissa. Ut enif
-            ad minim venice, quin nostrum exercitation illampu laborings nisi ut liquid ex ea commons construal. Duos aube grue dolor in
-            reprehended in voltage veil esse colum doolie eu fujian bulla parian. Exceptive sin ocean cuspidate non president, sunk in culpa
-            qui officiate descent molls anim id est labours.
-        </Typography>
-    </MainCard>
-);
-
-export default SamplePage;
+export default function SamplePage() {
+    return (
+        <MainCard title="Productos">
+        <Grid container spacing={gridSpacing}>
+            <Grid item xs={12} sm={6}>
+                <SubCard title="Lista de productos">
+                    <Grid container direction="column" spacing={1}>
+                        <Grid item>
+                                <Tabla/> 
+                        </Grid>
+                    </Grid>
+                </SubCard>
+            </Grid>
+            <Grid item xs={12} sm={6}>
+                <SubCard title="Nuevo Producto">
+                        <Formulario />
+                </SubCard>
+            </Grid>
+            
+        </Grid>
+        </MainCard>
+            
+    )
+}

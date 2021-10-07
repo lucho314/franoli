@@ -6,13 +6,13 @@ import { ButtonBase } from '@material-ui/core';
 
 // project imports
 import config from 'config';
-import Logo from 'ui-component/Logo';
+import logo from '../../../assets/images/PERFIL.png';
 
 // ===========================|| MAIN LOGO ||=========================== //
 
 const LogoSection = () => (
     <ButtonBase disableRipple component={Link} to={config.defaultPath}>
-        <Logo />
+         <img src={logo} alt="Logo"  style={{height: "70px",marginLeft: "50px"}}  /> 
     </ButtonBase>
 );
 
