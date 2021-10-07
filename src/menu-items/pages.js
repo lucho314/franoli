@@ -1,5 +1,5 @@
 // assets
-import { IconKey, IconReceipt2, IconBug, IconBellRinging, IconPhoneCall } from '@tabler/icons';
+import { IconKey, IconReceipt2, IconBug, IconBellRinging, IconPhoneCall, IconBrandProducthunt } from '@tabler/icons';
 
 // constant
 const icons = {
@@ -7,17 +7,26 @@ const icons = {
     IconReceipt2,
     IconBug,
     IconBellRinging,
-    IconPhoneCall
+    IconPhoneCall,
+    IconBrandProducthunt
 };
 
 // ===========================|| EXTRA PAGES MENU ITEMS ||=========================== //
 
 const pages = {
     id: 'pages',
-    title: 'Pages',
-    caption: 'Pages Caption',
+    title: 'Menu',
+    caption: '',
     type: 'group',
     children: [
+        {
+            id: 'product',
+            title: 'Productos',
+            type: 'item',
+            url: '/productos',
+            target: false,
+            icon: icons.IconBrandProducthunt,
+        },
         {
             id: 'authentication',
             title: 'Authentication',

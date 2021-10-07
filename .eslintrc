@@ -8,11 +8,12 @@
     "settings": {
         "import/resolver": {
             "node": {
+                "extensions": [".js", ".jsx", ".ts", ".tsx"],
                 "moduleDirectory": ["node_modules", "src/"]
             }
         }
     },
-    "parser": "@babel/eslint-parser",
+    "parser": "@typescript-eslint/parser",
     "parserOptions": {
         "ecmaFeatures": {
             "experimentalObjectRestSpread": true,
@@ -28,17 +29,29 @@
         "react/require-default-props": 0,
         "react/no-array-index-key": 0,
         "react/jsx-props-no-spreading": 0,
+        "spaced-comment": 0,        // http://eslint.org/docs/rules/spaced-line-comment
         "react/forbid-prop-types": 0,
         "import/order": 0,
         "no-console": 0,
         "jsx-a11y/anchor-is-valid": 0,
         "no-shadow": 0,
+        "no-use-before-define": 0,
+        "import/extensions": [
+            "error",
+            "ignorePackages",
+            {
+              "js": "never",
+              "jsx": "never",
+              "ts": "never",
+              "tsx": "never"
+            }
+         ],
         "no-unused-vars": [
             1,
             {
                 "ignoreRestSiblings": false
             }
-        ],
+        ]
        
     }
 }

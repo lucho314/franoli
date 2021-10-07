@@ -1,5 +1,5 @@
 {
-    "name": "berry-material-react-free",
+    "name": "franoli-berry-material",
     "version": "2.0.0",
     "private": true,
     "dependencies": {
@@ -17,6 +17,10 @@
         "@testing-library/jest-dom": "^5.11.10",
         "@testing-library/react": "^11.2.6",
         "@testing-library/user-event": "^12.8.3",
+        "@types/jest": "^27.0.2",
+        "@types/node": "^16.10.3",
+        "@types/react": "^17.0.27",
+        "@types/react-dom": "^17.0.9",
         "apexcharts": "^3.26.1",
         "clsx": "^1.1.1",
         "firebase": "^9.1.1",
@@ -34,6 +38,8 @@
         "react-router": "6.0.0-beta.0",
         "react-router-dom": "6.0.0-beta.0",
         "react-scripts": "^4.0.3",
+        "node-sass": "4.14.1",
+        "normalize-scss": "^7.0.1",
         "redux": "^4.0.5",
         "yup": "^0.32.9"
     },
@@ -73,10 +79,13 @@
         "eslint-config-prettier": "^8.3.0",
         "eslint-plugin-import": "2.22.1",
         "eslint-plugin-jsx-a11y": "6.4.1",
+        "git-commit-msg-linter": "^3.2.8",
         "eslint-plugin-prettier": "^3.4.0",
         "eslint-plugin-react": "7.21.5",
         "eslint-plugin-react-hooks": "^4.2.0",
         "prettier": "^2.2.1",
-        "sass": "^1.32.11"
+        "sass": "^1.32.11",
+        "@typescript-eslint/parser": "^4.29.2",
+        "typescript": "^4.4.3"
     }
 }

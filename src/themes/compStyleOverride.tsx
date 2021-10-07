@@ -8,7 +8,7 @@ export default function componentStyleOverrides(theme) {
             styleOverrides: {
                 root: {
                     fontWeight: 500,
-                    textTransform: 'capitalize',
+                   /// textTransform: ,
                     borderRadius: '4px'
                 }
             }
