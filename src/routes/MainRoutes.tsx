@@ -4,7 +4,6 @@ import React, { lazy } from 'react';
 import MainLayout from 'layout/MainLayout';
 import Loadable from 'ui-component/Loadable';
 import ProductPage from 'views/productos';
-
 // dashboard routing
 const DashboardDefault = Loadable(lazy(() => import('views/dashboard/Default')));
 
@@ -17,6 +16,7 @@ const UtilsTablerIcons = Loadable(lazy(() => import('views/utilities/TablerIcons
 
 // sample page routing
 const SamplePage = Loadable(lazy(() => import('views/productos')));
+const Ventas = Loadable(lazy(() => import('views/ventas/VentaPage')));
 
 // ===========================|| MAIN ROUTING ||=========================== //
 
@@ -56,7 +56,10 @@ const MainRoutes = {
             path: '/productos',
             element: <ProductPage />
         },
-
+        {
+            path: '/ventas',
+            element: <Ventas />
+        },
        
     ]
 };

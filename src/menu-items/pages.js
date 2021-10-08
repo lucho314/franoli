@@ -28,6 +28,14 @@ const pages = {
             icon: icons.IconBrandProducthunt,
         },
         {
+            id: 'ventas',
+            title: 'Ventas',
+            type: 'item',
+            url: '/ventas',
+            target: false,
+            icon: icons.IconBrandProducthunt,
+        },
+        {
             id: 'authentication',
             title: 'Authentication',
             type: 'collapse',
