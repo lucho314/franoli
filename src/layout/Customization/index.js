@@ -1,19 +1,15 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-// material-ui
-import { useTheme } from '@material-ui/styles';
+
 import {
     Drawer,
-    Fab,
     FormControl,
     FormControlLabel,
     Grid,
-    IconButton,
     Radio,
     RadioGroup,
     Slider,
-    Tooltip,
     Typography
 } from '@material-ui/core';
 
@@ -35,7 +31,6 @@ function valueText(value) {
 // ===========================|| LIVE CUSTOMIZATION ||=========================== //
 
 const Customization = () => {
-    const theme = useTheme();
     const dispatch = useDispatch();
     const customization = useSelector((state) => state.customization);
 

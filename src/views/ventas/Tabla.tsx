@@ -2,7 +2,7 @@ import { DataGrid } from '@material-ui/data-grid';
 import React, { useEffect, useState } from 'react';
 import db from 'servicios/fiebase';
 import Loading from 'utils/Loading';
-import { collection, query, where, getDocs, doc, getDoc } from "firebase/firestore";
+import { collection, query, where, getDocs, getDoc } from "firebase/firestore";
 
 const columns = [
     { field: 'Producto', headerName: 'Producto', width: 200},
@@ -39,8 +39,6 @@ const Productos = () => {
         const producto: any = await (await getDoc(element.ProductoId)).data()
         vent[i].Producto=producto.Producto
       });
-
-      console.log(vent)
       setVentas(vent)
       setLoading(false)
     };
