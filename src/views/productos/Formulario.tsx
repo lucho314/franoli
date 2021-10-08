@@ -23,7 +23,7 @@ export default function Formulario() {
                         aria-describedby="outlined-weight-helper-text"
                         inputProps={{
                         'aria-label': 'weight',
-                        'placeholder':'Producto'
+                        'placeholder':'Precio'
                         }}
                     />
             </FormControl> 
@@ -35,7 +35,7 @@ export default function Formulario() {
                         aria-describedby="outlined-weight-helper-text"
                         inputProps={{
                         'aria-label': 'weight',
-                        'placeholder':'Producto'
+                        'placeholder':'Stock'
                         }}
                     />
             </FormControl> 

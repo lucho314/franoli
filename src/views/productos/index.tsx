@@ -36,15 +36,15 @@ export default function ProductPage() {
                     </IconButton>
                 </Grid>
             </Grid>
-            {show && (
+            {show ? (
                 <Suspense fallback={<Loading />}>
                     <Card>
-                        <Grid item xs={12} sm={6}>
+                        <Grid item xs={12} sm={12}>
                             <Formulario />
                         </Grid>
                     </Card>
                 </Suspense>
-            )}
+            ) :
             <Card title="Productos">
                 <Grid container>
                     <Grid item xs={12} sm={12}>
@@ -55,7 +55,7 @@ export default function ProductPage() {
                         </Grid>
                     </Grid>
                 </Grid>
-            </Card>
+            </Card>}
         </>
     );
 }

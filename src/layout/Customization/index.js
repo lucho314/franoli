@@ -22,12 +22,10 @@ import PerfectScrollbar from 'react-perfect-scrollbar';
 
 // project imports
 import SubCard from 'ui-component/cards/SubCard';
-import AnimateButton from 'ui-component/extended/AnimateButton';
 import { SET_BORDER_RADIUS, SET_FONT_FAMILY } from 'store/actions'; // THEME_RTL
 import { gridSpacing } from 'store/constant';
 
-// assets
-import { IconSettings } from '@tabler/icons';
+
 
 // concat 'px'
 function valueText(value) {
@@ -94,29 +92,7 @@ const Customization = () => {
         <>
             {/* toggle button */}
 
-            <Tooltip title="Live Customize">
-                <Fab
-                    component="div"
-                    onClick={handleToggle}
-                    size="medium"
-                    variant="string"
-                    color="secondary"
-                    sx={{
-                        bottom: 0,
-                        m: 4,
-                        position: 'fixed',
-                        right: 20,
-                        zIndex: (theme) => theme.zIndex.speedDial,
-                        boxShadow: theme.shadows[8]
-                    }}
-                >
-                    <AnimateButton type="rotate">
-                        <IconButton color="inherit" size="large" disableRipple>
-                            <IconSettings />
-                        </IconButton>
-                    </AnimateButton>
-                </Fab>
-            </Tooltip>
+         
 
             <Drawer
                 anchor="right"
