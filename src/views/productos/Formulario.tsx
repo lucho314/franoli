@@ -1,53 +1,53 @@
 import React from 'react'
-import {Grid,FormControl,OutlinedInput,Button} from '@material-ui/core';
+import {Grid,Button, TextField} from '@material-ui/core';
+import { useForm } from "react-hook-form";
 
 export default function Formulario() {
+const { register, handleSubmit } = useForm();
+  const onSubmit = data => console.log(data);
     return (
-         <Grid container>
-            <Grid item xs={12} sm={12}>
-                <FormControl sx={{ m: 1, width: '95%' }} variant="outlined">
-                    <OutlinedInput
-                        id="Producto"
-                        aria-describedby="outlined-weight-helper-text"
-                        inputProps={{
-                        'aria-label': 'weight',
-                        'placeholder':'Producto'
-                        }}
-                    />
-            </FormControl> 
-            </Grid>  
-            <Grid item xs={12} sm={12}>
-            <FormControl sx={{ m: 1, width: '95%' }} variant="outlined">
-                    <OutlinedInput
-                        id="Precio"
-                        aria-describedby="outlined-weight-helper-text"
-                        inputProps={{
-                        'aria-label': 'weight',
-                        'placeholder':'Precio'
-                        }}
-                    />
-            </FormControl> 
+        <form onSubmit={handleSubmit(onSubmit)}>
+        <Grid container>
+            <Grid item xs={12} sm={4} m={1}>
+            <TextField 
+            sx={{ m: 1, width: '95%' }}
+                id="Producto"
+                label="Producto"
+                variant="standard"
+                {...register("Producto", { required: true, maxLength: 20 })}
+                />
             </Grid>
-            <Grid item xs={12} sm={12}>
-            <FormControl sx={{ m: 1, width: '95%' }} variant="outlined">
-                    <OutlinedInput
-                        id="Stock"
-                        aria-describedby="outlined-weight-helper-text"
-                        inputProps={{
-                        'aria-label': 'weight',
-                        'placeholder':'Stock'
-                        }}
-                    />
-            </FormControl> 
+            
+            <Grid item xs={12} sm={4} m={1}>
+            <TextField 
+            sx={{ m: 1, width: '95%' }}
+                id="Total"
+                label="Precio"
+                variant="standard"
+                type="number"
+                {...register("Precio", { required: true, min:0 })}
+                />
             </Grid>
-            <Grid item xs={12} sm={12}>
-            <FormControl sx={{ marginTop: '3%', width: '100%' }} variant="outlined">
-                <Button  color="success" variant="contained">
+            <Grid item xs={12} sm={4} m={1}>
+            <TextField 
+            sx={{ m: 1, width: '95%' }}
+                id="Total"
+                label="Cantidad"
+                variant="standard"
+                {...register("Cantidad", { required: true, min:0 })}
+                />
+            </Grid>
+            <Grid  item xs={12} sm={4} m={1}>
+           
+                <Button sx={{ m: 1, width: '95%' }} type="submit"  color="success" variant="contained"
+                  
+                >
                     Guardar
                 </Button>
-            </FormControl> 
+           
            
             </Grid>
         </Grid>
+        </form>
     )
 }

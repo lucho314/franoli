@@ -1,9 +1,12 @@
-import React, { useState } from 'react';
+import React, { lazy, useState } from 'react';
 import Tabla from './Tabla';
 import { makeStyles } from '@material-ui/styles';
 import { IconLetterX, IconPlus } from '@tabler/icons';
 import { Card, Grid, IconButton, Theme } from '@material-ui/core';
 
+
+
+const Formulario = lazy(() => import('./Formulario'));
 const useStyles = makeStyles((theme: Theme) => ({
     gridButton: {
         display: 'flex',
@@ -34,6 +37,15 @@ export default function VentaPage() {
                 </IconButton>
             </Grid>
          </Grid>
+         {show ?
+         <Card title="Productos">
+            <Grid container>
+                <Grid item xs={12} sm={12}>
+                    <Formulario/>
+                </Grid>
+            </Grid>
+         </Card>
+         :
          <Card title="Productos">
                 <Grid container>
                     <Grid item xs={12} sm={12}>
@@ -44,7 +56,7 @@ export default function VentaPage() {
                         </Grid>
                     </Grid>
                 </Grid>
-            </Card>
+            </Card>}
         </>
     )
 }
