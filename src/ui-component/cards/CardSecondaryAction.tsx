@@ -1,23 +1,26 @@
-import PropTypes from 'prop-types';
-import React from 'react';
-
+import { ButtonBase, Tooltip } from '@material-ui/core';
 // material-ui
 import { useTheme } from '@material-ui/styles';
-import { ButtonBase, Link, Tooltip } from '@material-ui/core';
-
+import React from 'react';
 // project imports
 import Avatar from '../extended/Avatar';
 
 // ===========================|| CARD SECONDARY ACTION ||=========================== //
 
-const CardSecondaryAction = ({ title, link, icon }) => {
-    const theme = useTheme();
+type Props = {
+    icon?: React.ReactNode;
+    link?: string;
+    title?: string;
+};
+const CardSecondaryAction = (props: Props) => {
+    const { title, link, icon } = props;
+    const theme: any = useTheme();
 
     return (
         <Tooltip title={title || 'Reference'} placement="left">
             <ButtonBase disableRipple>
                 {!icon && (
-                    <Avatar component={Link} href={link} target="_blank" alt="MUI Logo" size="badge" color="primary" outline>
+                    <Avatar size="badge" color="primary" outline>
                         <svg width="500" height="500" viewBox="0 0 500 500" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <g clipPath="url(#clip0)">
                                 <path
@@ -43,19 +46,13 @@ const CardSecondaryAction = ({ title, link, icon }) => {
                     </Avatar>
                 )}
                 {icon && (
-                    <Avatar component={Link} href={link} target="_blank" size="badge" color="primary" outline>
+                    <Avatar size="badge" color="primary" outline>
                         {icon}
                     </Avatar>
                 )}
             </ButtonBase>
         </Tooltip>
     );
-};
-
-CardSecondaryAction.propTypes = {
-    icon: PropTypes.node,
-    link: PropTypes.string,
-    title: PropTypes.string
 };
 
 export default CardSecondaryAction;

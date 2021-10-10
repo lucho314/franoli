@@ -1,12 +1,11 @@
-import PropTypes from 'prop-types';
-import React from 'react';
-
+import MuiAvatar from '@material-ui/core/Avatar';
+import { Theme } from '@material-ui/core/styles';
 // material-ui
 import { makeStyles } from '@material-ui/styles';
-import MuiAvatar from '@material-ui/core/Avatar';
+import React from 'react';
 
 // style constant
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles((theme: Theme) => ({
     primaryBackground: {
         background: theme.palette.primary.main,
         color: theme.palette.background.paper
@@ -97,8 +96,15 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 // ===========================|| AVATAR ||=========================== //
-
-const Avatar = ({ className, color, outline, size, ...others }) => {
+type Props = {
+    className?: string;
+    color?: string;
+    outline?: boolean;
+    size?: string;
+    children?: React.ReactNode;
+};
+const Avatar = (props: Props) => {
+    const { className, color, outline, size, children, ...others } = props;
     const classes = useStyles();
     let avatarClass = [];
 
@@ -110,14 +116,7 @@ const Avatar = ({ className, color, outline, size, ...others }) => {
         avatarClass = className ? [...avatarClass, className] : avatarClass;
     }
 
-    return <MuiAvatar className={avatarClass.join(' ')} {...others} />;
-};
-
-Avatar.propTypes = {
-    className: PropTypes.string,
-    color: PropTypes.string,
-    outline: PropTypes.bool,
-    size: PropTypes.string
+    return <MuiAvatar className={avatarClass.join(' ')} {...children} {...others} />;
 };
 
 export default Avatar;
