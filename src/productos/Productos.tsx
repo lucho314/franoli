@@ -1,7 +1,7 @@
 import { DataGrid } from '@material-ui/data-grid';
-import React, { useEffect, useState } from 'react';
-import db from 'servicios/fiebase';
+import React from 'react';
 import Loading from 'utils/Loading';
+import useProductosCustom from 'utils/querys/useProductos';
 
 const columns = [
     { field: 'Producto', headerName: 'Producto', width: 180},
@@ -11,28 +11,7 @@ const columns = [
   
   
 const Productos = () => {
-    const [productos, setProductos] = useState([]);
-    const [loading, setLoading] = useState(true)
-
-    const getProductos = async ()  => {
-        db.collection('Productos').onSnapshot((querySnapshot) => {
-            const prd = [];
-            querySnapshot.forEach((doc) => {
-                prd.push({
-                    id: doc.id,
-                    ...doc.data()
-                });
-            });
-            setProductos(prd);
-            setLoading(false)
-           
-        });
-      
-    };
-
-    useEffect(() => {
-        getProductos();
-    }, []);
+    const { productos, loading } = useProductosCustom();
     if(loading) return <Loading />
  
     return (

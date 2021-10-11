@@ -48,6 +48,8 @@ export default function Formulario() {
 
     useEffect(() => {
         register('ProductoId');
+        register('Precio');
+        
         getStock();
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
@@ -82,18 +84,7 @@ export default function Formulario() {
                 </Grid>
           
                 <Grid item xs={12} sm={4} m={1}>
-                <TextField
-                        sx={{ m: 1, width: '95%' }}
-                        InputProps={{
-                            readOnly: true,
-                          }}
-                          variant="filled"
-                          label="Precio"  
-                          InputLabelProps={{ shrink: true}}  
-                          value={0}
-                          {...register('Precio', { required: true, min:1 })}
-                        onChange={(e) => {  calcularTotal("Precio",e.target.value)}}
-                    />
+                <span>{getValues("Precio")}</span>
                 </Grid>
             </Grid>
             <Grid container>
