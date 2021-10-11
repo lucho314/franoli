@@ -1,7 +1,6 @@
-import { Theme } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
 
-const useStylesFormulario = makeStyles((theme: Theme) => ({
+const useStylesFormulario = makeStyles(() => ({
     gridButton: {
         display: 'flex',
         justifyContent: 'flex-end'

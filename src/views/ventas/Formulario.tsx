@@ -1,14 +1,37 @@
 import { Autocomplete, Button, Grid, TextField } from '@material-ui/core';
-import { collection, getDocs, query, where } from 'firebase/firestore';
+import { addDoc, collection, getDocs, query, where } from 'firebase/firestore';
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import db from 'servicios/fiebase';
 
+const defaultForm={
+    "Precio": 0,
+    "Cliente": "",
+    "Cantidad": 0,
+    "Total": 0,
+    "Fecha": new Date('2021-10-15').toISOString().substring(0,10),
+    "ProductoId": ""
+}
+
 export default function Formulario() {
     const [stock, setStock] = useState([]);
-    const { register, handleSubmit, setValue } = useForm();
-    const onSubmit = (data) => console.log(data);
-
+    const { register, handleSubmit, setValue,getValues ,setFocus,reset } = useForm({defaultValues:defaultForm});
+    const onSubmit = (data) =>save(data);
+    
+    const save=async (data)=>{
+        
+       await addDoc(collection(db, "Eventos"), {
+            Tipo: "Salida",
+           ...data,
+           ProductoId: db.collection("Productos").doc(data.ProductoId)
+           
+          })
+          
+       
+        reset(defaultForm);
+        setValue("ProductoId","")
+        
+    }
     const getStock = async () => {
         const prd = [];
         const q = query(collection(db, 'Productos'), where('Stock', '>', 0));
@@ -16,17 +39,28 @@ export default function Formulario() {
         querySnapshot.forEach(async (doc) => {
             prd.push({
                 label: doc.data().Producto,
-                value: doc.id
+                value: doc.id,
+                precio:doc.data().Precio
             });
         });
         setStock(prd);
     };
 
     useEffect(() => {
-        register('Producto');
+        register('ProductoId');
         getStock();
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+
+    const calcularTotal=(field,valor) =>{
+       
+        const precio = (field==="Precio") ? parseInt(valor,10) : getValues("Precio")
+        const cantidad = (field==="Cantidad")? parseInt(valor,10) :  getValues("Cantidad")
+
+        const total = precio*cantidad
+        
+        setValue("Total",total)
+    }
 
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
@@ -38,7 +72,27 @@ export default function Formulario() {
                         options={stock}
                         sx={{ m: 1, width: '95%' }}
                         renderInput={(params) => <TextField {...params} label="Seleccione producto" />}
-                        onChange={(e, options) => setValue('Producto', options.value)}
+                        onChange={(e, options) => {
+                            setValue('ProductoId', options.value)
+                            setValue('Precio', options.precio)    
+                            setFocus("Cliente")
+                        }}
+                        
+                    />
+                </Grid>
+          
+                <Grid item xs={12} sm={4} m={1}>
+                <TextField
+                        sx={{ m: 1, width: '95%' }}
+                        InputProps={{
+                            readOnly: true,
+                          }}
+                          variant="filled"
+                          label="Precio"  
+                          InputLabelProps={{ shrink: true}}  
+                          value={0}
+                          {...register('Precio', { required: true, min:1 })}
+                        onChange={(e) => {  calcularTotal("Precio",e.target.value)}}
                     />
                 </Grid>
             </Grid>
@@ -49,7 +103,7 @@ export default function Formulario() {
                         id="Cliente"
                         label="Cliente"
                         variant="standard"
-                        {...register('Cliente', { required: true, maxLength: 20 })}
+                        {...register('Cliente', { required: true, maxLength: 50 })}
                     />
                 </Grid>
                 <Grid item xs={12} sm={4} m={1}>
@@ -58,7 +112,13 @@ export default function Formulario() {
                         id="Cantidad"
                         label="Cantidad"
                         variant="standard"
-                        {...register('Cantidad', { required: true, maxLength: 20 })}
+                        type="number"
+                        {...register('Cantidad', { required: true,min:1 })}
+                        onBlur={(e)=>{
+                            calcularTotal("Cantidad",e.target.value)
+                            setFocus("Fecha")
+
+                        }}
                     />
                 </Grid>
 
@@ -68,7 +128,10 @@ export default function Formulario() {
                         id="Total"
                         label="Total"
                         variant="standard"
-                        {...register('total', { required: true, maxLength: 20 })}
+                        type="number"
+                        InputLabelProps={{ shrink: true, required: true }}
+                        value={0}
+                        {...register('Total', { required: true, min: 1 })}
                     />
                 </Grid>
                 <Grid item xs={12} sm={4} m={1}>
@@ -79,7 +142,6 @@ export default function Formulario() {
                         id="Fecha"
                         InputLabelProps={{ shrink: true, required: true }}
                         type="date"
-                        variant="standard"
                         {...register('Fecha', { required: true, maxLength: 20 })}
                     />
                 </Grid>

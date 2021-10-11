@@ -9,11 +9,10 @@ import Avatar from '../extended/Avatar';
 
 type Props = {
     icon?: React.ReactNode;
-    link?: string;
     title?: string;
 };
 const CardSecondaryAction = (props: Props) => {
-    const { title, link, icon } = props;
+    const { title, icon } = props;
     const theme: any = useTheme();
 
     return (
