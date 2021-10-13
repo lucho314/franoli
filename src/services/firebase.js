@@ -1,7 +1,7 @@
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/firestore';
 import firebaseConfig from './config';
-import { collection, getDocs, query, where,addDoc } from 'firebase/firestore';
+import { collection, getDocs, query, where, getDoc, writeBatch, doc } from 'firebase/firestore';
 
 class Firebase {
   constructor() {
@@ -68,7 +68,6 @@ class Firebase {
           });
         });
         const total = ventas.length
-        console.log(products)
         resolve({ ventas, total });
       })()
 
@@ -76,22 +75,47 @@ class Firebase {
   }
 
   setProduct = (data) => {
-    const venta={
+
+    const venta = {
       Tipo: "Salida",
       ...data,
-      ProductoId: this.db.collection("Productos").doc(data.ProductoId)
+      ProductoId: doc(this.db, "Productos", data.ProductoId)
     }
 
-    return new Promise((resolve) => {
+    return new Promise((resolve, reject) => {
       (async () => {
-       await addDoc(collection(this.db, "Eventos"), venta)
-      
-      resolve({ resp:"Ok" });
+        const producto = await (await getDoc(venta.ProductoId)).data() //obtenemos el producto a editar
+        const Stock = parseInt(producto.Stock, 10) - parseInt(venta.Cantidad, 10) //calculamos el nuevo stock
+        if (Stock<0) {
+          reject(new Error(`La cantidad vendida no puede superar el stock. Stock actual ${producto.Stock}`));
+
+        }
+        else {
+
+          // Get a new write batch
+          const batch = writeBatch(this.db);
+
+          // Set the value of 'NYC'
+          const nycRef = doc(collection(this.db, "Eventos"));
+          batch.set(nycRef, venta);
+
+          // Update the population of 'SF'
+          
+
+
+          const sfRef = venta.ProductoId;
+          batch.update(sfRef, { Stock });  //editamos el producto
+
+          // Commit the batch
+          await batch.commit();
+
+          resolve("Ok");
+        }
       })()
-     
+
     })
-    
-    
+
+
   }
 
 }
