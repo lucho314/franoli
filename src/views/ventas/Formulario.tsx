@@ -1,8 +1,7 @@
 import { Autocomplete, Button, Grid, TextField } from '@material-ui/core';
-import { addDoc, collection, getDocs, query, where } from 'firebase/firestore';
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import db from 'servicios/fiebase';
+import firebaseInstance from 'services/firebase';
 
 const defaultForm={
     "Precio": 0,
@@ -15,49 +14,36 @@ const defaultForm={
 
 export default function Formulario() {
     const [stock, setStock] = useState([]);
+    const [precio, setPrecio] = useState(0)
     const { register, handleSubmit, setValue,getValues ,setFocus,reset } = useForm({defaultValues:defaultForm});
     const onSubmit = (data) =>save(data);
     
     const save=async (data)=>{
         
-       await addDoc(collection(db, "Eventos"), {
-            Tipo: "Salida",
-           ...data,
-           ProductoId: db.collection("Productos").doc(data.ProductoId)
-           
-          })
-          
-       
-        reset(defaultForm);
-        setValue("ProductoId","")
-        
+        firebaseInstance.setProduct(data).then(()=>{
+            reset(defaultForm);
+            setValue("ProductoId","")
+            setPrecio(0)
+        })
+  
     }
-    const getStock = async () => {
-        const prd = [];
-        const q = query(collection(db, 'Productos'), where('Stock', '>', 0));
-        const querySnapshot = await getDocs(q);
-        querySnapshot.forEach(async (doc) => {
-            prd.push({
-                label: doc.data().Producto,
-                value: doc.id,
-                precio:doc.data().Precio
-            });
-        });
-        setStock(prd);
-    };
 
     useEffect(() => {
         register('ProductoId');
         register('Precio');
         
-        getStock();
+        firebaseInstance.getStock().then(st=>{
+            const {stock} = st
+            console.log(stock)
+            setStock(stock)
+        })
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const calcularTotal=(field,valor) =>{
+    const calcularTotal=() =>{
        
-        const precio = (field==="Precio") ? parseInt(valor,10) : getValues("Precio")
-        const cantidad = (field==="Cantidad")? parseInt(valor,10) :  getValues("Cantidad")
+       
+        const cantidad =  getValues("Cantidad")
 
         const total = precio*cantidad
         
@@ -76,7 +62,8 @@ export default function Formulario() {
                         renderInput={(params) => <TextField {...params} label="Seleccione producto" />}
                         onChange={(e, options) => {
                             setValue('ProductoId', options.value)
-                            setValue('Precio', options.precio)    
+                            setPrecio(options.precio) 
+                            calcularTotal()  
                             setFocus("Cliente")
                         }}
                         
@@ -84,7 +71,7 @@ export default function Formulario() {
                 </Grid>
           
                 <Grid item xs={12} sm={4} m={1}>
-                <span>{getValues("Precio")}</span>
+                <span>{precio}</span>
                 </Grid>
             </Grid>
             <Grid container>
@@ -105,10 +92,9 @@ export default function Formulario() {
                         variant="standard"
                         type="number"
                         {...register('Cantidad', { required: true,min:1 })}
-                        onBlur={(e)=>{
-                            calcularTotal("Cantidad",e.target.value)
+                        onBlur={()=>{
+                            calcularTotal()
                             setFocus("Fecha")
-
                         }}
                     />
                 </Grid>
@@ -121,7 +107,6 @@ export default function Formulario() {
                         variant="standard"
                         type="number"
                         InputLabelProps={{ shrink: true, required: true }}
-                        value={0}
                         {...register('Total', { required: true, min: 1 })}
                     />
                 </Grid>

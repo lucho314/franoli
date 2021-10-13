@@ -1,6 +1,7 @@
 import { Card, Grid, IconButton } from '@material-ui/core';
 import { IconLetterX, IconPlus } from '@tabler/icons';
-import React, { lazy, useState } from 'react';
+import React, { lazy, useEffect, useState } from 'react';
+import firebaseInstance from 'services/firebase';
 import MainCard from 'ui-component/cards/MainCard';
 import useStylesFormulario from 'utils/useStylesFormulario';
 import Tabla from './Tabla';
@@ -11,6 +12,12 @@ export default function VentaPage() {
     const classes = useStylesFormulario();
     const [show, setShow] = useState(false);
     const toggle = () => setShow(!show);
+
+    useEffect(() => {
+        firebaseInstance.getVentas().then(prd=>console.log(prd))
+       
+
+    }, [])
 
     return (
         <>
