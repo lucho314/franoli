@@ -1,18 +1,68 @@
+import { Button, Input } from '@material-ui/core';
 import { DataGrid } from '@material-ui/data-grid';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
+import DataTable from "react-data-table-component";
 import firebaseInstance from 'services/firebase';
 import Loading from 'utils/Loading';
 
 const columns = [
-    { field: 'Producto', headerName: 'Producto', width: 180 },
-    { field: 'Precio', headerName: 'Precio', width: 180 },
-    { field: 'Stock', headerName: 'Stock', width: 180 }
+    {
+        name: 'Producto',
+        selector: row => row.Producto,
+        sortable: true
+    },
+    {
+        name: 'Precio',
+        selector: row => row.Precio,
+        sortable: true
+    },
+    {
+        name: 'Stock',
+        selector: row => row.Stock,
+        sortable: true
+    },
 ];
 
+const FilterComponent = ({ filterText, onFilter, onClear }) => (
+    <>
+      <Input
+        id="search"
+        type="text"
+        placeholder="Buscar producto"
+        value={filterText}
+        onChange={onFilter}
+      />
+      <Button
+        className="btn btn-outline-secondary text-light"
+        onClick={onClear}
+      >
+        X
+      </Button>
+    </>
+  );
 
 const Productos = () => {
     const [Productos, setProductos] = useState([])
     const [loading, setLoading] = useState(true)
+    const [filterText, setFilterText] =useState('');
+    const [resetPaginationToggle, setResetPaginationToggle] = useState(false);
+
+    const filteredItems = Productos.filter(
+		item => item.Producto && item.Producto.toLowerCase().includes(filterText.toLowerCase()),
+	);
+
+    const subHeaderComponentMemo = useMemo(() => {
+		const handleClear = () => {
+			if (filterText) {
+				setResetPaginationToggle(!resetPaginationToggle);
+				setFilterText('');
+			}
+		};
+
+		return (
+			<FilterComponent filterText={filterText} onFilter={e => setFilterText(e.target.value)} onClear={handleClear}  />
+		);
+	}, [filterText, resetPaginationToggle]);
 
     useEffect(() => {
 
@@ -27,19 +77,18 @@ const Productos = () => {
     if (loading) return <Loading />
 
     return (
-        <div style={{ height: 400, width: '100%' }}>
-            <div style={{ display: 'flex', height: '100%' }}>
-                <div style={{ flexGrow: 1 }}>
-                    <DataGrid
-                        autoHeight
-                        rows={Productos}
+       
+                <DataTable
                         columns={columns}
-                        pageSize={5}
-                        rowsPerPageOptions={[5]}
+                        data={filteredItems}
+                        pagination
+                        paginationResetDefaultPage={resetPaginationToggle} // optionally, a hook to reset pagination to page 1
+                        subHeader
+                        subHeaderComponent={subHeaderComponentMemo}
+                        selectableRows
+                        persistTableHead
                     />
-                </div>
-            </div>
-        </div>
+             
     );
 };
 
