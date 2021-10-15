@@ -1,16 +1,16 @@
-import { spawnSync } from 'child_process';
 import React, { useEffect, useMemo, useState } from 'react';
 import DataTable from "react-data-table-component";
+import { isMobile } from 'react-device-detect';
 import firebaseInstance from 'services/firebase';
 import FilterComponent from 'utils/FilterComponent';
 import Loading from 'utils/Loading';
 
 
-const columns = [
+const columns = (isMobile)?[
     {
         name: 'Producto',
         selector: row => row.Producto,
-        sortable: true
+        sortable: true,
     },
     {
         name: 'Precio',
@@ -22,7 +22,37 @@ const columns = [
         selector: row => row.Stock,
         sortable: true
     },
-];
+]:[
+    {
+        name: 'Producto',
+        selector: row => row.Producto,
+        sortable: true,
+        style:{
+           
+            fontSize:'10px',
+            maxWidth : "190px",
+        }
+    },
+    {
+        name: 'Precio',
+        selector: row => row.Precio,
+        sortable: true,
+        style:{
+            maxWidth : "30px",
+            fontSize:'10px'
+        }
+    },
+    {
+        name: 'Stock',
+        selector: row => row.Stock,
+        sortable: true,
+        style:{
+            maxWidth : "30px",
+            fontSize:'10px'
+        }
+    }
+]
+;
 
 
 
