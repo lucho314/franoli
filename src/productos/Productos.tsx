@@ -6,7 +6,7 @@ import FilterComponent from 'utils/FilterComponent';
 import Loading from 'utils/Loading';
 
 
-const columns = (isMobile)?[
+const columns = (!isMobile)?[
     {
         name: 'Producto',
         selector: row => row.Producto,
