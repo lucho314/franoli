@@ -1,9 +1,10 @@
-import { Button, Input } from '@material-ui/core';
-import { DataGrid } from '@material-ui/data-grid';
+import { spawnSync } from 'child_process';
 import React, { useEffect, useMemo, useState } from 'react';
 import DataTable from "react-data-table-component";
 import firebaseInstance from 'services/firebase';
+import FilterComponent from 'utils/FilterComponent';
 import Loading from 'utils/Loading';
+
 
 const columns = [
     {
@@ -23,46 +24,49 @@ const columns = [
     },
 ];
 
-const FilterComponent = ({ filterText, onFilter, onClear }) => (
-    <>
-      <Input
-        id="search"
-        type="text"
-        placeholder="Buscar producto"
-        value={filterText}
-        onChange={onFilter}
-      />
-      <Button
-        className="btn btn-outline-secondary text-light"
-        onClick={onClear}
-      >
-        X
-      </Button>
-    </>
-  );
+
 
 const Productos = () => {
     const [Productos, setProductos] = useState([])
     const [loading, setLoading] = useState(true)
-    const [filterText, setFilterText] =useState('');
+    const [stock, setStock] = useState(false)
+    const [filterText, setFilterText] = useState('');
     const [resetPaginationToggle, setResetPaginationToggle] = useState(false);
 
     const filteredItems = Productos.filter(
-		item => item.Producto && item.Producto.toLowerCase().includes(filterText.toLowerCase()),
-	);
+        item => (stock) ?
+            item.Producto && item.Stock > 0 && item.Producto.toLowerCase().includes(filterText.toLowerCase())
+            :
+            item.Producto && item.Producto.toLowerCase().includes(filterText.toLowerCase())
+    );
+
 
     const subHeaderComponentMemo = useMemo(() => {
-		const handleClear = () => {
-			if (filterText) {
-				setResetPaginationToggle(!resetPaginationToggle);
-				setFilterText('');
-			}
-		};
+        const handleClear = () => {
+            if (filterText) {
+                setResetPaginationToggle(!resetPaginationToggle);
+                setFilterText('');
+            }
+        };
+        const handleChange = () => {
+            setStock(!stock);
+        };
 
-		return (
-			<FilterComponent filterText={filterText} onFilter={e => setFilterText(e.target.value)} onClear={handleClear}  />
-		);
-	}, [filterText, resetPaginationToggle]);
+        return (
+            <>
+                <span style={{ marginRight: "78%", marginTop: "10px" }}>
+                    Solo Stock:
+                    <input
+                        name="isGoing"
+                        type="checkbox"
+                        checked={stock}
+                        onChange={handleChange} />
+
+                </span>
+                <FilterComponent filterText={filterText} onFilter={e => setFilterText(e.target.value)} onClear={handleClear} />
+            </>
+        );
+    }, [filterText, resetPaginationToggle, stock]);
 
     useEffect(() => {
 
@@ -77,18 +81,17 @@ const Productos = () => {
     if (loading) return <Loading />
 
     return (
-       
-                <DataTable
-                        columns={columns}
-                        data={filteredItems}
-                        pagination
-                        paginationResetDefaultPage={resetPaginationToggle} // optionally, a hook to reset pagination to page 1
-                        subHeader
-                        subHeaderComponent={subHeaderComponentMemo}
-                        selectableRows
-                        persistTableHead
-                    />
-             
+
+        <DataTable
+            columns={columns}
+            data={filteredItems}
+            pagination
+            paginationResetDefaultPage={resetPaginationToggle} // optionally, a hook to reset pagination to page 1
+            subHeader
+            subHeaderComponent={subHeaderComponentMemo}
+            persistTableHead
+        />
+
     );
 };
 

@@ -22,6 +22,7 @@ class Firebase {
           products.push({
             id: doc.id,
             ...doc.data(),
+            Producto: doc.data().Producto.toUpperCase()
           });
         });
         const total = products.length
@@ -61,9 +62,11 @@ class Firebase {
         const qEv = query(collection(this.db, 'Eventos'), where('Tipo', '==', 'Salida'));
         const querySnapshotEv = await getDocs(qEv);
         querySnapshotEv.forEach((doc) => {
+          const data=doc.data()
+          delete data.ProductoId
           ventas.push({
             id: doc.id,
-            ...doc.data(),
+            ...data,
             Producto: products.find((poduct) => poduct.id === doc.data().ProductoId.id).Producto
           });
         });
