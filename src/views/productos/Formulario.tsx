@@ -1,10 +1,18 @@
 import React from 'react';
 import { Grid, Button, TextField } from '@material-ui/core';
 import { useForm } from 'react-hook-form';
+import firebaseInstance from 'services/firebase';
 
 export default function Formulario() {
     const { register, handleSubmit } = useForm();
-    const onSubmit = (data) => console.log(data);
+    const onSubmit = (data) => {   
+        firebaseInstance.addProduct(data).then(()=> {
+           
+           console.log("insertado");  
+        }).catch(error => {
+            console.log(error); 
+        })
+    };
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
             <Grid container>

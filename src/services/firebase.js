@@ -121,6 +121,33 @@ class Firebase {
 
   }
 
+  //add product to firebase
+  addProduct = (data) => {
+    const product = {
+      ...data,
+      Producto: data.Producto.toUpperCase()
+    }
+    return new Promise((resolve, reject) => {
+      (async () => {
+        const producto = await (await getDoc(doc(this.db, "Productos", data.Producto))).data() //obtenemos el producto a editar
+        if (producto) {
+          reject(new Error(`El producto ${data.Producto} ya existe`));
+
+        }
+        else {
+          // Get a new write batch
+          const batch = writeBatch(this.db);
+
+          // Set the value of 'NYC'
+          const nycRef = doc(collection(this.db, "Productos"));
+          batch.set(nycRef, product);
+
+          // Update the population of 'SF'}
+        }
+      }
+      )() //ejecutamos la funcion
+    })
+  }
 }
 
 

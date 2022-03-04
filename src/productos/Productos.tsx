@@ -111,7 +111,6 @@ const Productos = () => {
     if (loading) return <Loading />
 
     return (
-
         <DataTable
             columns={columns}
             data={filteredItems}
